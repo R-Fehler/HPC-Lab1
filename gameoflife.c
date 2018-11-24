@@ -116,6 +116,11 @@ void evolve(char* currentfield, char* newfield, int width, int height) {
     }
   }
 }
+void swap_field(char** currentfield, char** newfield) {
+  char* temp = *currentfield;
+  *currentfield = *newfield;
+  *newfield = temp;
+}
 
 void filling_random(char* currentfield, int width, int height) {
   int i;
@@ -152,7 +157,7 @@ void game(int width, int height, int num_timesteps) {
     evolve(currentfield, newfield, width, height);
     write_field(newfield, width, height, time);
     // TODO 3: implement SWAP of the fields
-
+    swap_field(currentfield, newfield);
     // TODO 4: implement periodic boundary condition
   }
 
