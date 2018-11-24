@@ -97,19 +97,19 @@ void evolve(char* currentfield, char* newfield, int width, int height) {
                                      // abgezogen
 
       if (currentfield[cell_index] == DEAD && summe_der_Nachbarn == 3) {
-        currentfield[cell_index] = ALIVE;
+        newfield[cell_index] = ALIVE;
       }
 
       else if (summe_der_Nachbarn <= 1) {
-        currentfield[cell_index] = DEAD;
+        newfield[cell_index] = DEAD;
       }
 
       else if (summe_der_Nachbarn == 3 || summe_der_Nachbarn == 2) {
-        currentfield[cell_index] = ALIVE;
+        newfield[cell_index] = ALIVE;
       }
 
       else if (summe_der_Nachbarn >= 4) {
-        currentfield[cell_index] = DEAD;
+        newfield[cell_index] = DEAD;
       }
 
       // HINT: avoid boundaries
