@@ -157,7 +157,7 @@ void game(int width, int height, int num_timesteps) {
     evolve(currentfield, newfield, width, height);
     write_field(newfield, width, height, time);
     // TODO 3: implement SWAP of the fields
-    swap_field(currentfield, newfield);
+    swap_field(&currentfield, &newfield);
     // TODO 4: implement periodic boundary condition
   }
 
