@@ -6,7 +6,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-
 // OPTIONAL: comment this out for console output
 //#define CONSOLE_OUTPUT
 
@@ -66,7 +65,7 @@ void write_field(char* currentfield, int width, int height, int timestep) {
     create_vtk_header(vtk_header, width, height, timestep);
   }
   printf("writing timestep %d\n", timestep);
-  FILE *fp;  // The current file handle.
+  FILE* fp;  // The current file handle.
   char filename[1024];
   snprintf(filename, 1024, "./gol/gol-%05d.vtk", timestep);
   fp = fopen(filename, "w");
@@ -84,13 +83,34 @@ void evolve(char* currentfield, char* newfield, int width, int height) {
 
   for (int y = 1; y < height - 1; y++) {
     for (int x = 1; x < width - 1; x++) {
+      int cell_index = calcIndex(width, x, y);
+      // Durchlaufen der 9 Felder des aktuellen "Stempels"
       for (int x1 = -1; x1 <= 1; x1++) {
         for (int y1 = -1; y1 <= 1; y1++) {
-          summe_der_Nachbarn += currentfield[calcIndex(width, x + x1, y + y1)];
+          summe_der_Nachbarn +=
+              currentfield[calcIndex(width, (x + x1), (y + y1))];
         }
+      }
+      // Wert der untersuchten Zelle von der Summe der Felder abziehen
+      summe_der_Nachbarn -=
+          currentfield[cell_index];  // wenn zelle lebt wird 1 von der summe
+                                     // abgezogen
 
-      } /* code */
-      summe_der_Nachbarn -= currentfield[calcIndex(width, x, y)];
+      if (currentfield[cell_index] == DEAD && summe_der_Nachbarn == 3) {
+        currentfield[cell_index] = ALIVE;
+      }
+
+      else if (summe_der_Nachbarn <= 1) {
+        currentfield[cell_index] = DEAD;
+      }
+
+      else if (summe_der_Nachbarn == 3 || summe_der_Nachbarn == 2) {
+        currentfield[cell_index] = ALIVE;
+      }
+
+      else if (summe_der_Nachbarn >= 4) {
+        currentfield[cell_index] = DEAD;
+      }
 
       // HINT: avoid boundaries
     }
